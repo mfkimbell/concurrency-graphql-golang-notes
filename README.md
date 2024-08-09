@@ -54,6 +54,8 @@
 
 # GraphQL
 
+<img width="567" alt="Screenshot 2024-08-09 at 4 30 17 PM" src="https://github.com/user-attachments/assets/1fa08c05-13bf-4a27-8c23-c3053eee5bc0">
+
 It's a middleman:
 
 Backend -> GraphQL -> Frontend
@@ -161,6 +163,7 @@ mutation CreateUser {
   }
 }
 ```
+
 
 ### Overfetching and Underfetching
 * Overfetching and underfetching are common issues in API design:
