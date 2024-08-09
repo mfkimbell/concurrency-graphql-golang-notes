@@ -51,3 +51,120 @@
 
 * Wait Groups (sync.WaitGroup) are used to wait for a collection of Go routines to finish executing. It provides a way to block the main program until all Go routines have completed, similar to how await works in asynchronous programming in other languages like JavaScript or Python.
 * The wait group is passed into the Go routine and signals when the routine has finished, allowing the main program to continue execution after all routines are done.
+
+# GraphQL
+
+It's a middleman:
+
+Backend -> GraphQL -> Frontend
+
+Frontend -> GraphQL -> Backend
+
+### GraphQL Overview
+
+GraphQL is a query language for APIs that allows clients to request specific data they need, making it highly efficient for fetching data from servers. It was developed by Facebook and provides an alternative to RESTful APIs by giving clients more control over the data they receive.
+
+### Schema
+
+GraphQL **schema** defines the structure of data that clients can request from the API. It includes:
+
+* **Types:** Define object types with fields (e.g., `User`, `Post`) and their data types (`String`, `Int`, custom types).
+* **Queries:** Define operations for fetching data (e.g., `getUser`, `getPosts`).
+* **Mutations:** Define operations for modifying data (e.g., `createUser`, `updatePost`).
+
+Example GraphQL schema:
+
+```graphql
+type Query {
+  getUser(id: ID!): User
+  getPosts: [Post]
+}
+
+type Mutation {
+  createUser(input: CreateUserInput!): User
+  updatePost(id: ID!, input: UpdatePostInput!): Post
+}
+
+type User {
+  id: ID!
+  name: String!
+  email: String!
+  posts: [Post]
+}
+
+type Post {
+  id: ID!
+  title: String!
+  content: String!
+  author: User!
+}
+```
+
+### Resolvers
+Resolvers are functions that define how GraphQL fields are resolved. They fetch the actual data for each field requested in a GraphQL query or mutation.
+```graphql
+const resolvers = {
+  Query: {
+    getUser: (parent, { id }, context, info) => {
+      // Logic to fetch user data by ID
+    },
+    getPosts: (parent, args, context, info) => {
+      // Logic to fetch list of posts
+    },
+  },
+  Mutation: {
+    createUser: (parent, { input }, context, info) => {
+      // Logic to create a new user
+    },
+    updatePost: (parent, { id, input }, context, info) => {
+      // Logic to update a post by ID
+    },
+  },
+  User: {
+    posts: (parent, args, context, info) => {
+      // Logic to fetch posts authored by a user
+    },
+  },
+  Post: {
+    author: (parent, args, context, info) => {
+      // Logic to fetch the author of a post
+    },
+  },
+};
+```
+
+### Queries and Mutations
+Queries in GraphQL are used to fetch data, while mutations are used to modify data. They are defined in the schema and resolved by corresponding resolver functions.
+
+Example GraphQL queries and mutations:
+
+```graphql
+# Query to fetch a user by ID
+query GetUser {
+  getUser(id: "123") {
+    id
+    name
+    email
+    posts {
+      id
+      title
+    }
+  }
+}
+
+# Mutation to create a new user
+mutation CreateUser {
+  createUser(input: { name: "Alice", email: "alice@example.com" }) {
+    id
+    name
+    email
+  }
+}
+```
+
+### Overfetching and Underfetching
+* Overfetching and underfetching are common issues in API design:
+
+* Overfetching: Occurs when the API returns more data than needed, wasting bandwidth and processing resources.
+* Underfetching: Occurs when the API does not provide enough data in a single request, leading to multiple round-trips and slower performance.
+* GraphQL helps mitigate these issues by allowing clients to specify exactly what data they need in each request, reducing overfetching and underfetching.
