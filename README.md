@@ -41,15 +41,28 @@
 x := 5           # type inference
 var y int = 7    # manual typing
 ```
+#### Concurrency in Go Video
+https://www.youtube.com/watch?v=LvgVSSpwND8
+
 ### Go Routines:
+* Go routines will stop executing when Main funciton finishes exeucuting without a wait group
 * Go routines are lightweight threads of execution in Go. They allow tasks to run concurrently within the same application. While they enable concurrency, they do not inherently provide parallelism. Go routines are managed by the Go runtime, which schedules them on available CPU cores.
 * Go routines are much lighter than traditional threads. You can spawn thousands or even millions of Go routines without the same overhead that you would encounter with operating system threads.
 * Concurrency means that multiple tasks are making progress simultaneously, but it doesn’t necessarily mean they are running at the same time on different cores (which is what parallelism does).
+* **HOWVER** In Go, goroutines are designed to run concurrently, which means they can execute in parallel if there are enough available CPU cores
+
+* Go routines run in the background, they don't hold up the main execution
 
 ### Channels:
 
 * Channels in Go are used for communication between Go routines. They allow Go routines to synchronize their operations and pass data between them safely.
 * In your example, strChan := make(chan string) creates a channel for strings, which is then used to transmit data between the main program and the Go routine executing the RequestTranslate function.
+* grabbing from a channel is blocking 
+<img width="1249" alt="Screenshot 2024-08-10 at 9 45 01 AM" src="https://github.com/user-attachments/assets/92a392ed-9c0f-41f5-81c4-b7b6fb7a406a">
+* This will never execute since the <- c is waiting on a reciever, but it'll never get to the reciever, needs to be in a separate go routine. or you can use a buffered channel ` c := make(chan string, 2) ` this will only block when the channel is full
+<img width="416" alt="Screenshot 2024-08-10 at 9 50 43 AM" src="https://github.com/user-attachments/assets/d4edc10b-8c41-4e14-afe8-ab00a1ed9986">
+* here if we used a for loop in the main, the timing difference wouldn't change since it's sequential, but if we use the `select` keyword with a switch case, we can execute the channel that's ready. 
+<img width="662" alt="Screenshot 2024-08-10 at 9 56 32 AM" src="https://github.com/user-attachments/assets/513f6e75-2761-4a93-a8a2-514d699a5c80">
 
 ### Wait Groups:
 
@@ -57,6 +70,11 @@ var y int = 7    # manual typing
 * The wait group is passed into the Go routine and signals when the routine has finished, allowing the main program to continue execution after all routines are done.
 
 We use Add() to add to wait groups, wg.Done() to decrement wait groups. We use defer wg.done() to automaticaly call wg.done() at the end of a function.
+
+### Worker pools
+*this will execute on all 4 cores of your cpu if you ahve 4 cores. (400% cpu utilization). we queue up workers, make 100 fib(n) jobs. The workers are just waiting for things to enter the channel. 
+<img width="611" alt="Screenshot 2024-08-10 at 10 03 50 AM" src="https://github.com/user-attachments/assets/36e9edb2-9534-49c5-bef9-b78df454ad69">
+
 
 ```golang
 package main
