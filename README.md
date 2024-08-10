@@ -37,6 +37,10 @@
 # GoLang
 
 
+```
+x := 5           # type inference
+var y int = 7    # manual typing
+```
 ### Go Routines:
 * Go routines are lightweight threads of execution in Go. They allow tasks to run concurrently within the same application. While they enable concurrency, they do not inherently provide parallelism. Go routines are managed by the Go runtime, which schedules them on available CPU cores.
 * Go routines are much lighter than traditional threads. You can spawn thousands or even millions of Go routines without the same overhead that you would encounter with operating system threads.
@@ -51,6 +55,39 @@
 
 * Wait Groups (sync.WaitGroup) are used to wait for a collection of Go routines to finish executing. It provides a way to block the main program until all Go routines have completed, similar to how await works in asynchronous programming in other languages like JavaScript or Python.
 * The wait group is passed into the Go routine and signals when the routine has finished, allowing the main program to continue execution after all routines are done.
+
+We use Add() to add to wait groups, wg.Done() to decrement wait groups. We use defer wg.done() to automaticaly call wg.done() at the end of a function.
+
+```golang
+package main
+
+import (
+    "fmt"
+    "sync"
+    "time"
+)
+
+func worker(id int, wg *sync.WaitGroup) {
+    defer wg.Done() // Decrease the WaitGroup counter when the function completes
+    fmt.Printf("Worker %d starting\n", id)
+    time.Sleep(time.Second) // Simulating some work
+    fmt.Printf("Worker %d done\n", id)
+}
+
+func main() {
+    var wg sync.WaitGroup
+
+    numWorkers := 3
+    wg.Add(numWorkers) // Increment the WaitGroup counter by the number of workers
+
+    for i := 0; i < numWorkers; i++ {
+        go worker(i, &wg) // Start each worker as a goroutine
+    }
+
+    wg.Wait() // Wait for all workers to complete
+    fmt.Println("All workers have completed")
+}
+```
 
 # GraphQL
 
