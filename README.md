@@ -13,6 +13,8 @@
 * Concurrent means they don't wait on each other (async)
 * Parrellel means they execute simultaneously
 
+
+
 ### Asynchronous execution
 * Used for IO-bound tasks, allowing other code to execute on the same thread while IO/Calls wait to be resolved.
 * In React, asynchronous execution is commonly implemented with `async` and `await` keywords, allowing non-blocking operations.
@@ -22,6 +24,12 @@
 * Involves running multiple threads in a single process.
 * Threads share the same memory space, making communication between them faster but also requiring careful handling of shared resources to avoid issues like race conditions.
 * Ideal for IO-bound tasks
+* Can be parallel or concurrent
+  
+#### When Multithreading Can Run at the Same Time (Parallel):
+* Multi-Core Processors: If a program is running on a multi-core processor, different threads can run on separate cores. This means true parallel execution is possible, and multiple threads can execute simultaneously.
+* Languages/Environments Without GIL: In languages that do not have restrictions like Python's Global Interpreter Lock (GIL), multithreading can achieve true parallelism (e.g., Java, C++).
+* Python has a GIL lock for example, so multithreading will always be concurrent
 
 ### Threads vs. Event Loop:
 * Multithreading uses multiple threads to achieve parallelism, which can lead to more complex code due to the need for synchronization mechanisms like locks.
