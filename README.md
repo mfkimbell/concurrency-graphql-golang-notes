@@ -123,6 +123,11 @@ func main() {
 }
 ```
 
+### Mutex
+* prevents simultaneous accesss (writes in this case) to a resource. Simultaneous writes will crash the code
+  
+<img width="425" alt="Screenshot 2025-02-19 at 10 59 01 PM" src="https://github.com/user-attachments/assets/0452ba31-8d98-4f9e-a0f1-99065d880fb6" />
+
 # GraphQL
 
 <img width="567" alt="Screenshot 2024-08-09 at 4 30 17 PM" src="https://github.com/user-attachments/assets/1fa08c05-13bf-4a27-8c23-c3053eee5bc0">
