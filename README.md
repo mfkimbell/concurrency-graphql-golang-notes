@@ -8,6 +8,8 @@
 * Tasks run simultaneously, taking advantage of multiple cores or processors.
 * This can be achieved through multi-threading or multiprocessing, depending on the use case.
 * Ideal for CPU-bound tasks where tasks are computationally intensive.
+  
+<img width="452" alt="Screenshot 2025-02-19 at 10 42 25 PM" src="https://github.com/user-attachments/assets/d25621ab-d6fe-4431-9e51-5d2a87c471a8" />
 
 ### Concurrent vs Parrallel execution:
 * Concurrent means they don't wait on each other (async)
