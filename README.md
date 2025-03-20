@@ -46,11 +46,60 @@
 
 # GoLang
 
-
+Types go after variables
 ```
 x := 5           # type inference
 var y int = 7    # manual typing
 ```
+
+
+#### Interfaces kind of act like classes 
+Here’s a **brief Go code snippet** showing **structs**, **interfaces**, and how you might **register** an implementation of an interface:
+
+```go
+package main
+
+import "fmt"
+
+// 1. Define an interface
+type Handler interface {
+	HandleRequest(data string)
+}
+
+// 2. Create a struct that implements the interface
+type MyHandler struct {
+	Name string
+}
+
+// 3. Implement the interface method on the struct
+func (h *MyHandler) HandleRequest(data string) {
+	fmt.Printf("Handler %s received: %s\n", h.Name, data)
+}
+
+// 4. A function to "register" or accept an interface
+func RegisterHandler(h Handler) {
+	fmt.Println("Registering handler...")
+	h.HandleRequest("Some Data")
+}
+
+func main() {
+	// 5. Create a struct instance that satisfies the interface
+	myHandler := &MyHandler{Name: "ExampleHandler"}
+	
+	// 6. Register your interface implementation
+	RegisterHandler(myHandler)
+}
+```
+
+### **What’s Happening?**
+1. **`Handler interface`**: Declares a function signature (`HandleRequest`).
+2. **`MyHandler struct`**: A concrete type that implements `HandleRequest`.
+3. **`func (h *MyHandler) HandleRequest(...) {}`**: A pointer receiver method that satisfies the `Handler` interface.
+4. **`RegisterHandler(h Handler)`**: Accepts **any** type that implements `Handler`.
+5. **`RegisterHandler(myHandler)`**: Passes a struct instance that implements `Handler`, so the code compiles and runs.
+
+Thus, **interfaces** define **what methods** a type must have, and **structs** actually **implement** those methods. The `RegisterHandler` function **accepts any struct** that satisfies the interface, allowing for flexible “registration” of functionality.
+
 #### Concurrency in Go Video
 https://www.youtube.com/watch?v=LvgVSSpwND8
 
